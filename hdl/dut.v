@@ -167,5 +167,10 @@ module dut(CLK,
   assign y_ff$ENQ = y_ff$FULL_N && a_ff$EMPTY_N && b_ff$EMPTY_N ;
   assign y_ff$DEQ = y_ff$EMPTY_N && pwyff_deq$whas ;
   assign y_ff$CLR = 1'b0 ;
+	 initial begin
+  $dumpfile("dut.vcd");
+    $dumpvars(0, dut);          
+  end
+endmodule  // dut
 endmodule  // dut
 
