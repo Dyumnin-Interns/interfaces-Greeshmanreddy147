@@ -47,6 +47,8 @@ module dut(CLK,
 	   read_en,
 	   read_data,
 	   read_rdy);
+	
+
   input  CLK;
   input  RST_N;
 
@@ -168,9 +170,9 @@ module dut(CLK,
   assign y_ff$DEQ = y_ff$EMPTY_N && pwyff_deq$whas ;
   assign y_ff$CLR = 1'b0 ;
 	 initial begin
-  $dumpfile("dut.vcd");
+ $dumpfile("dut.vcd");
     $dumpvars(0, dut);          
   end
 endmodule  // dut
-endmodule  // dut
+
 
