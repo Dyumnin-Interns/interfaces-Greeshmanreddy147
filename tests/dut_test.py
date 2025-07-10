@@ -144,7 +144,7 @@ async def dut_test(dut):
     await tbh.writer._driver_send(transcation={'add':5 ,'val':1})
     ab_cover(1,1)
     await tbh.reader._driver_send(transcation = {'add':3,'val':0})
-    log.debug(f"[functional] a:1 b:1 y:{dut.read_data.value.intger}")
+    log.debug(f"[functional] a:1 b:1 y:{dut.read_data.value}")
 
     tbh.solve()
     for i in range(25):
