@@ -26,7 +26,7 @@ def ab_cover(a,b):
 def w_r_cross(wd_data,wd_en,wd_add,rd_add,rd_en):
     pass
 
-class write_driver(BusDeiver)
+class write_driver(BusDeiver):
     _signals = ['CLK','RST_N','write_add','write_data','write_en','write_rdy']
     def __init__(self , name, entity ):
         self.name = name
@@ -43,7 +43,7 @@ class write_driver(BusDeiver)
         await RisingEdge(self.CLK)
         self.entity.write_en.value = 0
 
-class read_driver(BusDriver)
+class read_driver(BusDriver):
     _signals = ['CLK','RST_N','read_add','read_en','read_rdy','read_data']
     def __init__(self,name,entity):
          self.name = name
