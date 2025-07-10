@@ -10,17 +10,17 @@ from cocotb_coverage.coverage import CoverPoint, CoverCross, coverage_db
 import random as rnd
 import constraint
 
-@CoverPoint('top.a' , xf = lambda x, y : x, bin = [0,1])
-@CoverPoint('top.b' , xf = lambda x, y : y, bin = [0,1])
+@CoverPoint('top.a' , xf = lambda x, y : x, bins = [0,1])
+@CoverPoint('top.b' , xf = lambda x, y : y, bins = [0,1])
 @CoverCross('top.cross.ab' , items = ['top.a','top.b'])
 def ab_cover(a,b):
     pass
 
-@CoverPoint('top.rd_add' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : rd_add , bin = [0,1,2,3])
-@CoverPoint('top.rd_en' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : rd_en , bin = [0,1])
-@CoverPoint('top.wd_add' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_add , bin = [4,5])
-@CoverPoint('top.wd_en' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_en , bin = [0,1])
-@CoverPoint('top.wd_data' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_data , bin = [0,1])
+@CoverPoint('top.rd_add' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : rd_add , bins = [0,1,2,3])
+@CoverPoint('top.rd_en' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : rd_en , bins = [0,1])
+@CoverPoint('top.wd_add' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_add , bins = [4,5])
+@CoverPoint('top.wd_en' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_en , bins = [0,1])
+@CoverPoint('top.wd_data' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_data , bins = [0,1])
 @CoverCross('top.cross.w' , items = ['wd_add','wd_data','wd_en'])
 @CoverCross('top.cross.r',items = ['rd_add','rd_en'])
 def w_r_cross(wd_data,wd_en,wd_add,rd_add,rd_en):
