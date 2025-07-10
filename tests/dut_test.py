@@ -100,13 +100,13 @@ class tb:
     
     def con(self):
         self.s = constraint.Problem()
-        self.s.addVarible("write_en", [0,1])
-        self.s.addVarible("write_add", [4,5])
-        self.s.addVarible("write_data", [0,1])
-        self.s.addVarible("write_rdy", [1])
-        self.s.addVarible("read_en", [0,1])
-        self.s.addVarible("read_rdy", [1])
-        self.s.addVarible("read_add", [0,1,2,3])
+        self.s.addVariable("write_en", [0,1])
+        self.s.addVariable("write_add", [4,5])
+        self.s.addVariable("write_data", [0,1])
+        self.s.addVariable("write_rdy", [1])
+        self.s.addVariable("read_en", [0,1])
+        self.s.addVariable("read_rdy", [1])
+        self.s.addVariable("read_add", [0,1,2,3])
         self.s.addconstraint( lambda rd_en,rd_rdy,wd_en: rd_en == 1 if rd_rdy ==1 and wd_en == 0 else rd_en == 0 ,['read_en','read_rdy','write_en'])
         self.s.addconstraint( lambda rd_en,wd_rdy,wd_en: wd_en == 1 if wd_rdy ==1 and rd_en == 0 else rd_en == 0 ,['read_en','write_rdy','write_en'])
     
