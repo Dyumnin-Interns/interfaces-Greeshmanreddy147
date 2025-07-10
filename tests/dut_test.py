@@ -26,7 +26,7 @@ def ab_cover(a,b):
 def w_r_cross(wd_data,wd_en,wd_add,rd_add,rd_en):
     pass
 
-class write_driver(BusDeiver):
+class write_driver(BusDriver):
     _signals = ['CLK','RST_N','write_add','write_data','write_en','write_rdy']
     def __init__(self , name, entity ):
         self.name = name
