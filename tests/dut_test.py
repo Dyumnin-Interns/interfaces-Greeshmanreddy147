@@ -13,7 +13,7 @@ import constraint
 @CoverPoint('top.a' , xf = lambda x, y : x, bin = [0,1])
 @CoverPoint('top.b' , xf = lambda x, y : y, bin = [0,1])
 @CoverCross('top.cross.ab' , items = ['top.a','top.b'])
-def ab_cover(a,b)
+def ab_cover(a,b):
     pass
 
 @CoverPoint('top.rd_add' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : rd_add , bin = [0,1,2,3])
@@ -23,17 +23,17 @@ def ab_cover(a,b)
 @CoverPoint('top.wd_data' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_data , bin = [0,1])
 @CoverCross('top.cross.w' , items = ['wd_add','wd_data','wd_en'])
 @CoverCross('top.cross.r',items = ['rd_add','rd_en']
-def w_r_cross(wd_data,wd_en,wd_add,rd_add,rd_en)
+def w_r_cross(wd_data,wd_en,wd_add,rd_add,rd_en):
     pass
 
 class write_driver(BusDeiver)
     _signals = ['CLK','RST_N','write_add','write_data','write_en','write_rdy']
-    def __init__(self , name, entity )
+    def __init__(self , name, entity ):
         self.name = name
         self.entity = entity
         self.CLK = self.entity.CLK
 
-    async def _driver_send(self,transcation)
+    async def _driver_send(self,transcation):
         await RisingEdge(self.CLK)
         if self.entity.write_rdy.value !=1 :
             await RisingEdge(self.entity.write_rdy)
@@ -45,11 +45,11 @@ class write_driver(BusDeiver)
 
 class read_driver(BusDriver)
     _signals = ['CLK','RST_N','read_add','read_en','read_rdy','read_data']
-    def __init__(self,name,entity)
+    def __init__(self,name,entity):
          self.name = name
         self.entity = entity
         self.CLK = self.entity.CLK
-    async def _driver_send(self,transcation)
+    async def _driver_send(self,transcation):
         await RisingEdge(self.CLK)
         if self.entity.read_rdy.value !=1:
             await RisingEdge(self.entity.read_rdy)
@@ -59,7 +59,7 @@ class read_driver(BusDriver)
         self.entity.read_en = 0
 
 class tb:
-    def __init__(self,name,entity,log)
+    def __init__(self,name,entity,log):
         self.log = log
         self.name = name
         self.entity = entity
