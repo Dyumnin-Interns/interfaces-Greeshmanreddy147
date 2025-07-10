@@ -157,7 +157,7 @@ async def dut_test(dut):
         elif x.get('write_en') == 1:
             await tbh.writer._driver_send(transcation = {'add':x.get('write_add') , 'val': x.get('write_data')})
             log.debug(f"[{i}][write operation] address : {x.get('write_add')} put data : x.get('write_data')")
-            tbh.stat(x.get('write_add'),x.get('write_data')
+            tbh.stat(x.get('write_add'),x.get('write_data'))
         await RisingEdge(dut.CLK)
     for i in tbh.stats:
         log.debug(f"{i}")
