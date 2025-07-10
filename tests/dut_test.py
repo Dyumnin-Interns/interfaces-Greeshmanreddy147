@@ -119,7 +119,7 @@ class tb:
 
 @cocotb.test()
 async def dut_test(dut):
-    cocotb.start_soon(Clock(dut.CLK,2,"ns").start()
+    cocotb.start_soon(Clock(dut.CLK,2,"ns").start())
     log = SimLog('interface_test')
     logging.getLogger().setLevel(logging.INFO)
     tbh = tb(name = "tb inst",entity = dut, log=log)
