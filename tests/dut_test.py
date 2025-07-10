@@ -107,8 +107,8 @@ class tb:
         self.s.addVariable("read_en", [0,1])
         self.s.addVariable("read_rdy", [1])
         self.s.addVariable("read_add", [0,1,2,3])
-        self.s.addconstraint( lambda rd_en,rd_rdy,wd_en: rd_en == 1 if rd_rdy ==1 and wd_en == 0 else rd_en == 0 ,['read_en','read_rdy','write_en'])
-        self.s.addconstraint( lambda rd_en,wd_rdy,wd_en: wd_en == 1 if wd_rdy ==1 and rd_en == 0 else rd_en == 0 ,['read_en','write_rdy','write_en'])
+        self.s.addConstraint( lambda rd_en,rd_rdy,wd_en: rd_en == 1 if rd_rdy ==1 and wd_en == 0 else rd_en == 0 ,['read_en','read_rdy','write_en'])
+        self.s.addConstraint( lambda rd_en,wd_rdy,wd_en: wd_en == 1 if wd_rdy ==1 and rd_en == 0 else rd_en == 0 ,['read_en','write_rdy','write_en'])
     
     def solve(self):
         self.con_obj = self.con()
