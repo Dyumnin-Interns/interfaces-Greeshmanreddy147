@@ -46,7 +46,7 @@ class write_driver(BusDeiver):
 class read_driver(BusDriver):
     _signals = ['CLK','RST_N','read_add','read_en','read_rdy','read_data']
     def __init__(self,name,entity):
-         self.name = name
+        self.name = name
         self.entity = entity
         self.CLK = self.entity.CLK
     async def _driver_send(self,transcation):
