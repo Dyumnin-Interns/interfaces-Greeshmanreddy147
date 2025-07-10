@@ -38,12 +38,12 @@
 module dut(CLK,
 	   RST_N,
 
-	   write_address,
+	   write_add,
 	   write_data,
 	   write_en,
 	   write_rdy,
 
-	   read_address,
+	   read_add,
 	   read_en,
 	   read_data,
 	   read_rdy);
@@ -51,13 +51,13 @@ module dut(CLK,
   input  RST_N;
 
   // action method write
-  input  [2 : 0] write_address;
+  input  [2 : 0] write_add;
   input  write_data;
   input  write_en;
   output write_rdy;
 
   // actionvalue method read
-  input  [2 : 0] read_address;
+  input  [2 : 0] read_add;
   input  read_en;
   output read_data;
   output read_rdy;
@@ -105,14 +105,14 @@ module dut(CLK,
   assign write_rdy = 1'd1 ;
 
   // actionvalue method read
-  always@(read_address or
+  always@(read_add or
 	  y_ff$EMPTY_N or y_ff$D_OUT or a_ff$FULL_N or b_ff$FULL_N)
   begin
     case (read_address)
       3'd0: read_data = a_ff$FULL_N;
       3'd1: read_data = b_ff$FULL_N;
       3'd2: read_data = y_ff$EMPTY_N;
-      default: read_data = read_address == 3'd3 && y_ff$EMPTY_N && y_ff$D_OUT;
+      default: read_data = read_add == 3'd3 && y_ff$EMPTY_N && y_ff$D_OUT;
     endcase
   end
   assign read_rdy = 1'd1 ;
@@ -151,9 +151,9 @@ module dut(CLK,
 					      .EMPTY_N(y_ff$EMPTY_N));
 
   // inlined wires
-  assign a_data$whas = write_en && write_address == 3'd4 ;
-  assign b_data$whas = write_en && write_address == 3'd5 ;
-  assign pwyff_deq$whas = read_en && read_address == 3'd3 ;
+  assign a_data$whas = write_en && write_add == 3'd4 ;
+  assign b_data$whas = write_en && write_add == 3'd5 ;
+  assign pwyff_deq$whas = read_en && read_add == 3'd3 ;
 
   // register counter
   assign counter$D_IN = counter + 8'd1 ;
