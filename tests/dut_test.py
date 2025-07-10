@@ -149,7 +149,7 @@ async def dut_test(dut):
     tbh.solve()
     for i in range(25):
         x = tbh.get_sols()
-        w_r_cover(x.get('write_add'),x.get("write_data"),x.get("write_ena"),x.get('read_en'),x.get("read_add"))
+        w_r_cross(x.get('write_add'),x.get("write_data"),x.get("write_ena"),x.get('read_en'),x.get("read_add"))
         if x.get('read_en') == 1:
             await tbh.reader._driver_send(transcation = {'add':x.get('read_add') , 'val': 0})
             log.debug(f"[{i}][read operation] address : {x.get('read_add')} got data : {dut.read_data.value.integer}")
