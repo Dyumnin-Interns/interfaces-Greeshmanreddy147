@@ -109,7 +109,7 @@ module dut(CLK,
       3'd0: read_data = a_ff$FULL_N;
       3'd1: read_data = b_ff$FULL_N;
       3'd2: read_data = y_ff$EMPTY_N;
-      default: read_data = read_add == 3'd3 && y_ff$EMPTY_N && y_ff$D_OUT;
+      default: read_data = read_address == 3'd3 && y_ff$EMPTY_N && y_ff$D_OUT;
     endcase
   end
   assign read_rdy = 1'd1 ;
