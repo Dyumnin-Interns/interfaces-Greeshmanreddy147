@@ -116,7 +116,7 @@ class tb:
             ['write_en', 'write_rdy', 'read_en']
         )
         self.s.addConstraint(
-            lambda rd_add, rd_en: rd_add == [1,2,3,0] if rd_en ==1 else None,
+            lambda rd_add, rd_en: rd_add == [1,2,3,0] if rd_en ==1 ,
             ['read_address', 'read_en']
         )
     
