@@ -106,7 +106,7 @@ class tb:
         self.s.addVariable("write_rdy", [1])
         self.s.addVariable("read_en", [0,1])
         self.s.addVariable("read_rdy", [1])
-        self.s.addVariable("read_address", [0,1,2,3])
+        self.s.addVariable("read_address", [3,2,1,0])
         self.s.addConstraint(
             lambda rd_en, rd_rdy, wd_en: rd_en == 1 if (rd_rdy == 1 and wd_en == 0) else rd_en == 0,
             ['read_en', 'read_rdy', 'write_en']
