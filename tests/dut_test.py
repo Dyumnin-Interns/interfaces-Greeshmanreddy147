@@ -56,7 +56,7 @@ class read_driver(BusDriver):
         self.entity.read_en.value = 1
         self.entity.read_address.value = transaction.get('add')
         await RisingEdge(self.CLK)
-        self.entity.read_en = 0
+        self.entity.read_en.value = 0
 
 class tb:
     def __init__(self,name,entity,log):
@@ -86,11 +86,11 @@ class tb:
 
     def stat(self,add,val):
         if add == 0:
-            self.stats.append({'name': "as" ,'val' : (f"{ "full" if val == 0 else 'empty'}")})
+            self.stats.append({'name': "as" ,'val' : ( "full" if val == 0 else 'empty')})
         if add == 1:
-            self.stats.append({'name': "bs" , "val" : (f"{ "full" if val == 0 else 'empty'}")})
+            self.stats.append({'name': "bs" , "val" : ( "full" if val == 0 else 'empty')})
         if add == 2:
-            self.stats.append({'name': "ys" , "val" : (f"{ "full" if val == 1 else 'empty'}")})
+            self.stats.append({'name': "ys" , "val" : ( "full" if val == 1 else 'empty')})
         if add == 3:
             self.stats.append({'name': "yr" , "val" : val})
         if add == 4:
@@ -149,7 +149,7 @@ async def dut_test(dut):
     tbh.solve()
     for i in range(25):
         x = tbh.get_sols()
-        w_r_cross(x.get('write_address'),x.get("write_data"),x.get("write_ena"),x.get('read_en'),x.get("read_address"))
+        w_r_cross(x.get('write_data'),x.get("write_en"),x.get("write_address"),x.get('read_address'),x.get("read_en"))
         if x.get('read_en') == 1:
             await tbh.reader._driver_send(transcation = {'add':x.get('read_address') , 'val': 0})
             log.debug(f"[{i}][read operation] address : {x.get('read_address')} got data : {dut.read_data.value.integer}")
