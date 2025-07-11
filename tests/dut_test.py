@@ -27,34 +27,34 @@ def w_r_cross(wd_data,wd_en,wd_add,rd_add,rd_en):
     pass
 
 class write_driver(BusDriver):
-    _signals = ['CLK','RST_N','write_add','write_data','write_en','write_rdy']
+    _signals = ['CLK','RST_N','write_address','write_data','write_en','write_rdy']
     def __init__(self , name, entity ):
         self.name = name
         self.entity = entity
         self.CLK = self.entity.CLK
 
-    async def _driver_send(self,transcation):
+    async def _driver_send(self,transaction):
         await RisingEdge(self.CLK)
         if self.entity.write_rdy.value !=1 :
             await RisingEdge(self.entity.write_rdy)
         self.entity.write_en.value = 1
-        self.entity.write_add.value = transcation.get('add')
-        self.entity.write_data.value = transcation.get('val')
+        self.entity.write_address.value = transaction.get('add')
+        self.entity.write_data.value = transaction.get('val')
         await RisingEdge(self.CLK)
         self.entity.write_en.value = 0
 
 class read_driver(BusDriver):
-    _signals = ['CLK','RST_N','read_add','read_en','read_rdy','read_data']
+    _signals = ['CLK','RST_N','read_address','read_en','read_rdy','read_data']
     def __init__(self,name,entity):
         self.name = name
         self.entity = entity
         self.CLK = self.entity.CLK
-    async def _driver_send(self,transcation):
+    async def _driver_send(self,transaction):
         await RisingEdge(self.CLK)
         if self.entity.read_rdy.value !=1:
             await RisingEdge(self.entity.read_rdy)
         self.entity.read_en.value = 1
-        self.entity.read_add.value = transcation.get('add')
+        self.entity.read_address.value = transaction.get('add')
         await RisingEdge(self.CLK)
         self.entity.read_en = 0
 
@@ -72,10 +72,10 @@ class tb:
     async def reset(self):
         await RisingEdge(self.CLK)
         self.entity.write_en.value = 0
-        self.entity.write_add.value = 0
+        self.entity.write_address.value = 0
         self.entity.write_data.value = 0
         self.entity.read_en.value = 0
-        self.entity.read_add.value = 0
+        self.entity.read_address.value = 0
         self.entity.read_data.value = 0
         self.entity.RST_N.value = 1
         await ClockCycles(self.CLK,3)
@@ -101,12 +101,12 @@ class tb:
     def con(self):
         self.s = constraint.Problem()
         self.s.addVariable("write_en", [0,1])
-        self.s.addVariable("write_add", [4,5])
+        self.s.addVariable("write_address", [4,5])
         self.s.addVariable("write_data", [0,1])
         self.s.addVariable("write_rdy", [1])
         self.s.addVariable("read_en", [0,1])
         self.s.addVariable("read_rdy", [1])
-        self.s.addVariable("read_add", [0,1,2,3])
+        self.s.addVariable("read_address", [0,1,2,3])
         self.s.addConstraint( lambda rd_en,rd_rdy,wd_en: rd_en == 1 if rd_rdy ==1 and wd_en == 0 else rd_en == 0 ,['read_en','read_rdy','write_en'])
         self.s.addConstraint( lambda rd_en,wd_rdy,wd_en: wd_en == 1 if wd_rdy ==1 and rd_en == 0 else rd_en == 0 ,['read_en','write_rdy','write_en'])
     
@@ -125,8 +125,8 @@ async def dut_test(dut):
     tbh = tb(name = "tb inst",entity = dut, log=log)
     await tbh.reset()
 
-    await tbh.writer._driver_send(transcation={'add':4 ,'val':0})
-    await tbh.writer._driver_send(transcation={'add':5 ,'val':0})
+    await tbh.writer._driver_send(transaction={'add':4 ,'val':0})
+    await tbh.writer._driver_send(transaction={'add':5 ,'val':0})
     ab_cover(0,0)
     await tbh.reader._driver_send(transcation = {'add':3,'val':0})
     
@@ -149,15 +149,15 @@ async def dut_test(dut):
     tbh.solve()
     for i in range(25):
         x = tbh.get_sols()
-        w_r_cross(x.get('write_add'),x.get("write_data"),x.get("write_ena"),x.get('read_en'),x.get("read_add"))
+        w_r_cross(x.get('write_address'),x.get("write_data"),x.get("write_ena"),x.get('read_en'),x.get("read_address"))
         if x.get('read_en') == 1:
-            await tbh.reader._driver_send(transcation = {'add':x.get('read_add') , 'val': 0})
-            log.debug(f"[{i}][read operation] address : {x.get('read_add')} got data : {dut.read_data.value.integer}")
-            tbh.stat(x.get('read_add'),dut.read_data.value.integer)
+            await tbh.reader._driver_send(transcation = {'add':x.get('read_address') , 'val': 0})
+            log.debug(f"[{i}][read operation] address : {x.get('read_address')} got data : {dut.read_data.value.integer}")
+            tbh.stat(x.get('read_address'),dut.read_data.value.integer)
         elif x.get('write_en') == 1:
-            await tbh.writer._driver_send(transcation = {'add':x.get('write_add') , 'val': x.get('write_data')})
-            log.debug(f"[{i}][write operation] address : {x.get('write_add')} put data : x.get('write_data')")
-            tbh.stat(x.get('write_add'),x.get('write_data'))
+            await tbh.writer._driver_send(transcation = {'add':x.get('write_address') , 'val': x.get('write_data')})
+            log.debug(f"[{i}][write operation] address : {x.get('write_address')} put data : x.get('write_data')")
+            tbh.stat(x.get('write_address'),x.get('write_data'))
         await RisingEdge(dut.CLK)
     for i in tbh.stats:
         log.debug(f"{i}")
