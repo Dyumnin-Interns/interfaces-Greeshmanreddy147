@@ -21,8 +21,8 @@ def ab_cover(a,b):
 @CoverPoint('top.wd_add' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_add , bins = [4,5])
 @CoverPoint('top.wd_en' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_en , bins = [0,1])
 @CoverPoint('top.wd_data' , xf = lambda rd_add , rd_en , wd_add , wd_en ,wd_data : wd_data , bins = [0,1])
-@CoverCross('top.cross.w' , items = ['top.w.wd_add','top.w.wd_data','top.w.wd_en'])
-@CoverCross('top.cross.r',items = ['top.r.rd_add','top.r.rd_en'])
+@CoverCross('top.cross.w' , items = ['top.wd_add','top.wd_data','top.wd_en'])
+@CoverCross('top.cross.r',items = ['top.rd_add','top.rd_en'])
 def w_r_cross(wd_data,wd_en,wd_add,rd_add,rd_en):
     pass
 
