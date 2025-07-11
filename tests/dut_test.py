@@ -115,6 +115,11 @@ class tb:
             lambda wd_en, wd_rdy, rd_en: wd_en == 1 if (wd_rdy == 1 and rd_en == 0) else wd_en == 0,
             ['write_en', 'write_rdy', 'read_en']
         )
+        self.p.addConstraint(
+            lambda rd_addr, rd_en: True if rd_en == 1 else rd_addr in [0, 1],
+            ['read_address', 'read_en']
+        )
+
     
     def solve(self):
         self.con_obj = self.con()
