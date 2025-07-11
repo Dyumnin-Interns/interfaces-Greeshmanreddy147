@@ -158,20 +158,28 @@ async def dut_test(dut):
     log.debug(f"[functional] a:1 b:1 y:{dut.read_data.value}")
 
     tbh.solve()
-    for i in range(100):
-        x = tbh.get_sols()
-        w_r_cross(x.get('write_data'),x.get("write_en"),x.get("write_address"),x.get('read_address'),x.get("read_en"))
-        if x.get('read_en') == 1:
-            await tbh.reader._driver_send(transaction = {'add':x.get('read_address') , 'val': 0})
-            log.debug(f"[{i}][read operation] address : {x.get('read_address')} got data : {dut.read_data.value.integer}")
-            tbh.stat(x.get('read_address'),dut.read_data.value.integer)
-        elif x.get('write_en') == 1:
-            await tbh.writer._driver_send(transaction = {'add':x.get('write_address') , 'val': x.get('write_data')})
-            log.debug(f"[{i}][write operation] address : {x.get('write_address')} put data : x.get('write_data')")
-            tbh.stat(x.get('write_address'),x.get('write_data'))
-        await RisingEdge(dut.CLK)
-    for i in tbh.stats:
-        log.debug(f"{i}")
+    for sol in tbh.sols:
+        if sol['read_en'] == 1:
+            await tbh.reader._driver_send(transaction={'add': sol['read_address'], 'val': 0})
+            # Call coverage with these values
+            w_r_cross(
+                wd_data=sol['write_data'],
+                wd_en=sol['write_en'],
+                wd_add=sol['write_address'],
+                rd_add=sol['read_address'],
+                rd_en=sol['read_en']
+            )
+        elif sol['write_en'] == 1:
+            await tbh.writer._driver_send(transaction={'add': sol['write_address'], 'val': sol['write_data']})
+            w_r_cross(
+                wd_data=sol['write_data'],
+                wd_en=sol['write_en'],
+                wd_add=sol['write_address'],
+                rd_add=sol['read_address'],
+                rd_en=sol['read_en']
+            )
+
+  
     
     coverage_db.report_coverage(log.info,bins=True)
     log.info(f"Functional Coverage: {coverage_db['top.cross.ab'].cover_percentage:.2f} %")
