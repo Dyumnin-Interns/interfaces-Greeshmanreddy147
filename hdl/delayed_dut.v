@@ -47,6 +47,7 @@ module dut(CLK,
 	   read_en,
 	   read_data,
 	   read_rdy);
+	
   input  CLK;
   input  RST_N;
 
@@ -61,7 +62,7 @@ module dut(CLK,
   input  read_en;
   output read_data;
   output read_rdy;
-
+	
   // signals for module outputs
   reg read_data;
   wire read_rdy, write_rdy;
@@ -105,7 +106,7 @@ module dut(CLK,
   assign write_rdy = 1'd1 ;
 
   // actionvalue method read
-	always@(read_address or
+  always@(read_address or
 	  y_ff$EMPTY_N or y_ff$D_OUT or a_ff$FULL_N or b_ff$FULL_N)
   begin
     case (read_address)
@@ -202,4 +203,3 @@ module dut(CLK,
   `endif // BSV_NO_INITIAL_BLOCKS
   // synopsys translate_on
 endmodule  // dut
-
