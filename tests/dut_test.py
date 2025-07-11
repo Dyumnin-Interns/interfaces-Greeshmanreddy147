@@ -147,7 +147,7 @@ async def dut_test(dut):
     log.debug(f"[functional] a:1 b:1 y:{dut.read_data.value}")
 
     tbh.solve()
-    for i in range(25):
+    for i in range(40):
         x = tbh.get_sols()
         w_r_cross(x.get('write_data'),x.get("write_en"),x.get("write_address"),x.get('read_address'),x.get("read_en"))
         if x.get('read_en') == 1:
