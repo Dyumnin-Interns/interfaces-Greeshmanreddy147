@@ -120,7 +120,11 @@ class tb:
     def solve(self):
         self.con_obj = self.con()
         self.sols = self.s.getSolutions()
-    
+        from collections import Counter
+        addr_counts = Counter(sol['read_address'] for sol in self.sols if sol['read_en'] == 1)
+        print(addr_counts)
+        
+            
     def get_sols(self):
         return rnd.choice(self.sols) if self.sols else None
 
