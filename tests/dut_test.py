@@ -172,7 +172,7 @@ async def dut_test(dut):
 
     # Randomized, constrained test
     tbh.solve()
-    for i in range(32):
+    for i in range(100):
         x = tbh.get_sols()
         fl_cv(x.get("write_address"), x.get("write_data"), x.get("write_en"), x.get("read_en"), x.get("read_address"))
         if x.get('read_en') == 1:
